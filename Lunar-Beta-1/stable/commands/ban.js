@@ -5,25 +5,25 @@ exports.run = async (client, message, args, level) => { // eslint-disable-line n
     const member = message.guild.member(user);
     if (member) {
       member.ban({
-        reason: "They were bad!",
+        reason: "They weren't in compliance with this server's rules.",
       }).then(() => {
         // We let the message author know we were able to ban the person
-        message.reply(`Successfully banned ${user.tag}`);
+        message.reply(`Successfully banned ${user.tag}.`);
       }).catch(err => {
         // An error happened
         // This is generally due to the bot not being able to ban the member,
         // either due to missing permissions or role hierarchy
-        message.reply("I was unable to ban the member");
+        message.reply("I was unable to ban ${user.tag}. Please try again.");
         // Log the error
         console.error(err);
       });
     } else {
       // The mentioned user isn't in this guild
-      message.reply("That user isn't in this guild!");
+      message.reply("That user isn't in this guild.");
     }
   } else {
     // Otherwise, if no user was mentioned
-    message.reply("You didn't mention the user to ban!");
+    message.reply("You didn't mention the user you wanted to ban. Please mention the user you want me to ban.");
   }
   
 };
