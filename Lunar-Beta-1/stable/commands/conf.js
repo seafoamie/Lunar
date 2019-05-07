@@ -16,41 +16,41 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
   
   // Adding a new key adds it to every guild (it will be visible to all of them)
   if (action === "add") {
-    if (!key) return message.reply("Please specify a key to add");
-    if (defaults[key]) return message.reply("This key already exists in the default settings");
-    if (value.length < 1) return message.reply("Please specify a value");
+    if (!key) return message.reply("Please specify the key you want to add.");
+    if (defaults[key]) return message.reply("This key already exists in the default settings.");
+    if (value.length < 1) return message.reply("Please specify a value.");
 
     // `value` being an array, we need to join it first.
     defaults[key] = value.join(" ");
   
     // One the settings is modified, we write it back to the collection
     client.settings.set("default", defaults);
-    message.reply(`${key} successfully added with the value of ${value.join(" ")}`);
+    message.reply(`${key} has been successfuly added with the value of ${value.join(" ")}.`);
   } else
   
   // Changing the default value of a key only modified it for guilds that did not change it to another value.
   if (action === "edit") {
     if (!key) return message.reply("Please specify a key to edit");
-    if (!defaults[key]) return message.reply("This key does not exist in the settings");
-    if (value.length < 1) return message.reply("Please specify a new value");
+    if (!defaults[key]) return message.reply("This key does not exist in the settings.");
+    if (value.length < 1) return message.reply("Please specify a new value.");
 
     defaults[key] = value.join(" ");
 
     client.settings.set("default", defaults);
-    message.reply(`${key} successfully edited to ${value.join(" ")}`);
+    message.reply(`${key} successfully edited to ${value.join(" ")}.`);
   } else
   
   // WARNING: DELETING A KEY FROM THE DEFAULTS ALSO REMOVES IT FROM EVERY GUILD
   // MAKE SURE THAT KEY IS REALLY NO LONGER NEEDED!
   if (action === "del") {
     if (!key) return message.reply("Please specify a key to delete.");
-    if (!defaults[key]) return message.reply("This key does not exist in the settings");
+    if (!defaults[key]) return message.reply("This key does not exist in the settings.");
     
     // Throw the 'are you sure?' text at them.
-    const response = await client.awaitReply(message, `Are you sure you want to permanently delete ${key} from all guilds? This **CANNOT** be undone.`);
+    const response = await client.awaitReply(message, `Are you sure you want to permanently delete ${key} from all guilds? This __**CANNOT**__ be undone!`);
 
-    // If they respond with y or yes, continue.
-    if (["y", "yes"].includes(response)) {
+    // If they respond with y, del, delete or yes, continue.
+    if (["y", "yes", "del", "delete"].includes(response)) {
 
       // We delete the default `key` here.
       delete defaults[key];
@@ -63,9 +63,9 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
         client.settings.set(guildid, conf);
       }
       
-      message.reply(`${key} was successfully deleted.`);
+      message.reply(`${key} was successfully deleted from all guilds. This cannot be undone.`);
     } else
-    // If they respond with n or no, we inform them that the action has been cancelled.
+    // If they respond with n, cancel or no, we inform them that the action has been cancelled.
     if (["n","no","cancel"].includes(response)) {
       message.reply("Action cancelled.");
     }
@@ -73,9 +73,9 @@ exports.run = async (client, message, [action, key, ...value], level) => { // es
   
   // Display a key's default value
   if (action === "get") {
-    if (!key) return message.reply("Please specify a key to view");
-    if (!defaults[key]) return message.reply("This key does not exist in the settings");
-    message.reply(`The value of ${key} is currently ${defaults[key]}`);
+    if (!key) return message.reply("Please specify the key you would like to view.");
+    if (!defaults[key]) return message.reply("This key does not exist in the settings. Please try again.");
+    message.reply(`The value of ${key} is currently ${defaults[key]}.`);
 
   // Display all default settings.
   } else {
