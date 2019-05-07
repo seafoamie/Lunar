@@ -19,7 +19,7 @@ exports.run = async (client, message, [...value], level) => { // eslint-disable-
       // An error happened
       // This is generally due to the bot not being able to kick the member,
       // either due to missing permissions or role hierarchy
-      message.reply("I was unable to Add The Role");
+      message.reply("I was unable to add the role. Try again.");
       // Log the error
       console.error(err);
     }
@@ -37,7 +37,7 @@ exports.conf = {
 exports.help = {
   name: "addroleeveryone",
   category: "Moderation",
-  description: "Add a role to everyone. (Please Note it will take Time)",
+  description: "Add a role to everyone. (Please note that this command may take some time to execute)",
   usage: "addroleeveryone role"
 };
   
